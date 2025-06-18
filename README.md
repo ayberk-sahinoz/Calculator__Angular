@@ -2,6 +2,19 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
 
+##  Project Description
+
+This project is a modern and user-friendly calculator application developed using the Angular framework. It supports four basic arithmetic operations (addition, subtraction, multiplication, and division) and offers a clean, intuitive interface with a stylish dark theme.
+
+The project demonstrates core Angular features such as component-based architecture, data binding, and event handling. It is suitable for both learning and practical purposes.
+
+##  Technologies Used
+
+- [Angular CLI](https://angular.io/cli) (v20.0.2)
+- TypeScript
+- SCSS
+- HTML5 / CSS3
+
 ## Development server
 
 To start a local development server, run:
@@ -57,5 +70,5 @@ ng e2e
 
 ## Screenshots
 ![Calculator-2](https://github.com/user-attachments/assets/89f41f25-f05f-4df8-b87f-37850365014b)
--------------------------------------------------------------------------------------------------
+
 ![Calculator-1](https://github.com/user-attachments/assets/ae25d6ff-34c3-4d15-a74f-45c5a5842aeb)
