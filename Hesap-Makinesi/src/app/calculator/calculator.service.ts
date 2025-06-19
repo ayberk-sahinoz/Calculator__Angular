@@ -22,3 +22,7 @@ export class CalculatorService {
     return this.http.get<CalculationHistory[]>(`${this.apiUrl}/history`);
   }
 } 
+
+
+
+
