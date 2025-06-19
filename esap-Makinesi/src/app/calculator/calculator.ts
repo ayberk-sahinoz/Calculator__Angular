@@ -35,7 +35,6 @@ export class CalculatorComponent {
         }
       }
     } else if (value === 'Geçmişi Göster') {
-      
       alert('Geçmiş gösterilecek!');
     } else {
       this.expression += value.replace('×', '*').replace('−', '-');
@@ -50,9 +49,7 @@ export class CalculatorComponent {
     }
   }
 
-  
   safeEval(expr: string): string {
-    
     if (!/^[0-9+\-*/().\s]+$/.test(expr)) return 'HATA';
     try {
       expr = expr.replace(/×/g, '*').replace(/−/g, '-');
@@ -61,4 +58,4 @@ export class CalculatorComponent {
       return 'HATA';
     }
   }
-}
+} 

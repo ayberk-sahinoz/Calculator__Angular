@@ -59,25 +59,27 @@
     <div class="buttons">
       <button class="clear" (click)="clear()">C</button>
       <button class="backspace" (click)="backspace()">←</button>
-      <button class="operator" (click)="appendToDisplay('/')">/</button>
-      <button class="operator" (click)="appendToDisplay('*')">×</button>
+      <button class="operator" (click)="appendOperatorToDisplay('/')">/</button>
+      <button class="operator" (click)="appendOperatorToDisplay('*')">×</button>
       
       <button (click)="appendToDisplay('7')">7</button>
       <button (click)="appendToDisplay('8')">8</button>
       <button (click)="appendToDisplay('9')">9</button>
-      <button class="operator" (click)="appendToDisplay('-')">-</button>
+      <button class="operator" (click)="appendOperatorToDisplay('-')">-</button>
       
       <button (click)="appendToDisplay('4')">4</button>
       <button (click)="appendToDisplay('5')">5</button>
       <button (click)="appendToDisplay('6')">6</button>
-      <button class="operator" (click)="appendToDisplay('+')">+</button>
+      <button class="operator" (click)="appendOperatorToDisplay('+')">+</button>
       
       <button (click)="appendToDisplay('1')">1</button>
       <button (click)="appendToDisplay('2')">2</button>
       <button (click)="appendToDisplay('3')">3</button>
+      <button class="operator" (click)="appendToDisplay('.')">.</button>
       <button class="equals" (click)="calculate()">=</button>
-      
       <button (click)="appendToDisplay('0')">0</button>
+      <button class="operator" (click)="calculateSqrt()">√</button>
+      
 
       <button class="history-toggle" (click)="toggleHistory()">
         {{ showHistory ? 'Geçmişi Gizle' : 'Geçmişi Göster' }}

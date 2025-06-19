@@ -21,6 +21,26 @@ export class App {
   protected history: CalculationHistory[] = [];
   protected showHistory: boolean = false;
 
+  protected appendOperatorToDisplay(operator: string): void {
+  if (this.display === '') {
+    this.display = operator;
+  } else {
+    const lastChar = this.display.slice(-1);
+    const operators = ['+', '-', '*', '/'];
+
+    if (operators.includes(lastChar)) {
+      this.display = this.display.slice(0, -1) + operator;
+    } else {
+      this.display += operator;
+    }
+  }
+}
+
+calculateSqrt(): void {
+  const value = parseFloat(this.display);
+  if (!isNaN(value)) this.display = Math.sqrt(value).toString();
+}
+
   protected appendToDisplay(value: string): void {
     this.display += value;
   }
@@ -39,14 +59,14 @@ export class App {
       const result = Function('"use strict";return (' + expression + ')')();
       this.display = result.toString();
       
-      // Geçmişe ekle
+      
       this.history.unshift({
         expression: expression,
         result: result.toString(),
         timestamp: new Date()
       });
 
-      // Geçmişi 10 işlemle sınırla
+      
       if (this.history.length > 10) {
         this.history.pop();
       }

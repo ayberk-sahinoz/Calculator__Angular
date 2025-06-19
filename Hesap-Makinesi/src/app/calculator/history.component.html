@@ -1,0 +1,6 @@
+<div class="history-list">
+  <div *ngFor="let item of history" class="history-item">
+    <span>{{ item.expression }} = {{ item.result }}</span>
+    <span class="timestamp">{{ item.timestamp | date:'shortTime' }}</span>
+  </div>
+</div> 
