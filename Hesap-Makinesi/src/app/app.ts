@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { CalculatorService } from './calculator/calculator.service';
 
 interface CalculationHistory {
   expression: string;
@@ -21,25 +22,27 @@ export class App {
   protected history: CalculationHistory[] = [];
   protected showHistory: boolean = false;
 
-  protected appendOperatorToDisplay(operator: string): void {
-  if (this.display === '') {
-    this.display = operator;
-  } else {
-    const lastChar = this.display.slice(-1);
-    const operators = ['+', '-', '*', '/'];
+  constructor(private calculatorService: CalculatorService) {}
 
-    if (operators.includes(lastChar)) {
-      this.display = this.display.slice(0, -1) + operator;
+  protected appendOperatorToDisplay(operator: string): void {
+    if (this.display === '') {
+      this.display = operator;
     } else {
-      this.display += operator;
+      const lastChar = this.display.slice(-1);
+      const operators = ['+', '-', '*', '/'];
+
+      if (operators.includes(lastChar)) {
+        this.display = this.display.slice(0, -1) + operator;
+      } else {
+        this.display += operator;
+      }
     }
   }
-}
 
-calculateSqrt(): void {
-  const value = parseFloat(this.display);
-  if (!isNaN(value)) this.display = Math.sqrt(value).toString();
-}
+  calculateSqrt(): void {
+    const value = parseFloat(this.display);
+    if (!isNaN(value)) this.display = Math.sqrt(value).toString();
+  }
 
   protected appendToDisplay(value: string): void {
     this.display += value;
@@ -56,17 +59,13 @@ calculateSqrt(): void {
   protected calculate(): void {
     try {
       const expression = this.display;
-      const result = Function('"use strict";return (' + expression + ')')();
+      const result = this.calculatorService.calculateLocal(expression);
       this.display = result.toString();
-      
-      
       this.history.unshift({
         expression: expression,
         result: result.toString(),
         timestamp: new Date()
       });
-
-      
       if (this.history.length > 10) {
         this.history.pop();
       }
