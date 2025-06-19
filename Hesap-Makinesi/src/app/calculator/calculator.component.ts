@@ -10,7 +10,7 @@ import { CalculatorButtonComponent } from './calculator-button.component';
   styleUrls: ['./calculator.component.scss']
 })
 export class CalculatorComponent {
-  display: string = '';
+  display: string = '0';
   buttons: string[] = [
     '7', '8', '9', '/',
     '4', '5', '6', '*',
