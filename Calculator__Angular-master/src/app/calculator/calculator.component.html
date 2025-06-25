@@ -1,0 +1,39 @@
+<div class="calculator">
+  <div class="display">
+    {{ display || 0 }}
+  </div>
+  <div class="buttons">
+    <button class="clear" (click)="clear()">C</button>
+    <button class="backspace" (click)="backspace()">←</button>
+    <button class="operator" (click)="appendOperatorToDisplay('/')">/</button>
+    <button class="operator" (click)="appendOperatorToDisplay('*')">×</button>
+    <button class="number" (click)="appendToDisplay('7')">7</button>
+    <button class="number" (click)="appendToDisplay('8')">8</button>
+    <button class="number" (click)="appendToDisplay('9')">9</button>
+    <button class="operator" (click)="appendOperatorToDisplay('-')">-</button>
+    <button class="number" (click)="appendToDisplay('4')">4</button>
+    <button class="number" (click)="appendToDisplay('5')">5</button>
+    <button class="number" (click)="appendToDisplay('6')">6</button>
+    <button class="operator" (click)="appendOperatorToDisplay('+')">+</button>
+    <button class="number" (click)="appendToDisplay('1')">1</button>
+    <button class="number" (click)="appendToDisplay('2')">2</button>
+    <button class="number" (click)="appendToDisplay('3')">3</button>
+    <button class="operator" (click)="appendToDisplay('.')">.</button>
+    <button class="equals" style="grid-column: 1 / span 2;" (click)="calculate()">=</button>
+    <button (click)="appendToDisplay('0')" style="grid-column: 3;" class="number">0</button>
+    <button class="operator sqrt" style="grid-column: 4;" (click)="calculateSqrt()">√</button>
+  </div>
+  <div class="history-toggle-wrapper">
+    <button class="history-toggle" (click)="toggleHistory()">
+      {{ showHistory ? 'Geçmişi Gizle' : 'Geçmişi Göster' }}
+    </button>
+  </div>
+  <div class="history" *ngIf="showHistory">
+    <h3>Geçmiş İşlemler</h3>
+    <div class="history-item" *ngFor="let item of history" (click)="useHistoryItem(item)">
+      <div class="history-expression">{{ item.expression }}</div>
+      <div class="history-result">= {{ item.result }}</div>
+      <div class="history-time">{{ formatTimestamp(item.timestamp) }}</div>
+    </div>
+  </div>
+</div> 

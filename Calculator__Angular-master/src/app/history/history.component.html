@@ -1,0 +1,6 @@
+<div class="history-list">
+  <div *ngFor="let item of history" class="history-item">
+    <span>{{ item.parameter1 }} {{ item.operation }} {{ item.parameter2 !== undefined ? item.parameter2 : '' }} = {{ item.result }}</span>
+    <span class="timestamp">{{ item.date | date:'shortTime' }}</span>
+  </div>
+</div> 
