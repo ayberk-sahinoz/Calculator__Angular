@@ -31,9 +31,16 @@
   <div class="history" *ngIf="showHistory">
     <h3>Geçmiş İşlemler</h3>
     <div class="history-item" *ngFor="let item of history" (click)="useHistoryItem(item)">
-      <div class="history-expression">{{ item.expression }}</div>
+      <div class="history-expression">
+        <ng-container *ngIf="item.operation === 'SQUARE_ROOT'; else normalOp">
+          √{{ item.parameter1 }}
+        </ng-container>
+        <ng-template #normalOp>
+          {{ item.parameter1 }} {{ getOpSymbol(item.operation) }} {{ item.parameter2 !== undefined ? item.parameter2 : '' }}
+        </ng-template>
+      </div>
       <div class="history-result">= {{ item.result }}</div>
-      <div class="history-time">{{ formatTimestamp(item.timestamp) }}</div>
+      <div class="history-time">{{ formatTimestamp(item.date) }}</div>
     </div>
   </div>
 </div> 

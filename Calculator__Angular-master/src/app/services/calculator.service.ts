@@ -15,35 +15,90 @@ export class CalculatorService {
     const operator = match[2];
     const operand2 = match[3] ? parseFloat(match[3]) : undefined;
 
+    const now = new Date().toISOString();
+    
     switch (operator) {
       case '+':
         return this.apiService.add({ parameter1: operand1, parameter2: operand2 }).pipe(
-          map(res => res.result.toString()),
+          map(res => {
+            this.apiService.addHistory({
+              operation: 'ADDITION',
+              parameter1: operand1,
+              parameter2: operand2,
+              result: res.result,
+              date: now
+            }).subscribe();
+            return res.result.toString();
+          }),
           catchError(() => of('Hata'))
         );
       case '-':
         return this.apiService.subtract({ parameter1: operand1, parameter2: operand2 }).pipe(
-          map(res => res.result.toString()),
+          map(res => {
+            this.apiService.addHistory({
+              operation: 'SUBTRACTION',
+              parameter1: operand1,
+              parameter2: operand2,
+              result: res.result,
+              date: now
+            }).subscribe();
+            return res.result.toString();
+          }),
           catchError(() => of('Hata'))
         );
       case '*':
         return this.apiService.multiply({ parameter1: operand1, parameter2: operand2 }).pipe(
-          map(res => res.result.toString()),
+          map(res => {
+            this.apiService.addHistory({
+              operation: 'MULTIPLICATION',
+              parameter1: operand1,
+              parameter2: operand2,
+              result: res.result,
+              date: now
+            }).subscribe();
+            return res.result.toString();
+          }),
           catchError(() => of('Hata'))
         );
       case '/':
         return this.apiService.divide({ parameter1: operand1, parameter2: operand2 }).pipe(
-          map(res => res.result.toString()),
+          map(res => {
+            this.apiService.addHistory({
+              operation: 'DIVISION',
+              parameter1: operand1,
+              parameter2: operand2,
+              result: res.result,
+              date: now
+            }).subscribe();
+            return res.result.toString();
+          }),
           catchError(() => of('Hata'))
         );
       case '^':
         return this.apiService.power({ parameter1: operand1, parameter2: operand2 }).pipe(
-          map(res => res.result.toString()),
+          map(res => {
+            this.apiService.addHistory({
+              operation: 'POWER',
+              parameter1: operand1,
+              parameter2: operand2,
+              result: res.result,
+              date: now
+            }).subscribe();
+            return res.result.toString();
+          }),
           catchError(() => of('Hata'))
         );
       case '√':
         return this.apiService.squareRoot({ parameter1: operand1 }).pipe(
-          map(res => res.result.toString()),
+          map(res => {
+            this.apiService.addHistory({
+              operation: 'SQUARE_ROOT',
+              parameter1: operand1,
+              result: res.result,
+              date: now
+            }).subscribe();
+            return res.result.toString();
+          }),
           catchError(() => of('Hata'))
         );
       default:
