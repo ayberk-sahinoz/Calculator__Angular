@@ -81,4 +81,8 @@ export class ApiService {
   clearHistory(): Observable<any> {
     return this.http.delete(`${BASE_URL}/api/history/clearHistory`);
   }
+
+  addHistory(history: HistoryEntity): Observable<any> {
+    return this.http.post(`${BASE_URL}/api/history/add`, history);
+  }
 }
