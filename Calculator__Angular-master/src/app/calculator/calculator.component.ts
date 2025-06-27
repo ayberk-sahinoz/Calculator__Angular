@@ -138,39 +138,39 @@ export class CalculatorComponent implements OnInit {
       case '+':
         expression = `${this.firstOperand}+${secondOperand}`;
         this.apiService.add({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult('ADDITION', this.firstOperand!, secondOperand!, res.result), (_: any) => this.display = 'Hata');
         break;
       case '-':
         expression = `${this.firstOperand}-${secondOperand}`;
         this.apiService.subtract({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult('SUBTRACTION', this.firstOperand!, secondOperand!, res.result), (_: any) => this.display = 'Hata');
         break;
       case '*':
         expression = `${this.firstOperand}*${secondOperand}`;
         this.apiService.multiply({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult('MULTIPLICATION', this.firstOperand!, secondOperand!, res.result), (_: any) => this.display = 'Hata');
         break;
       case '/':
         expression = `${this.firstOperand}/${secondOperand}`;
         this.apiService.divide({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult('DIVISION', this.firstOperand!, secondOperand!, res.result), (_: any) => this.display = 'Hata');
         break;
       case '^':
         expression = `${this.firstOperand}^${secondOperand}`;
         this.apiService.power({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult('POWER', this.firstOperand!, secondOperand!, res.result), (_: any) => this.display = 'Hata');
         break;
       case '√':
         expression = `√${this.firstOperand}`;
         this.apiService.squareRoot({ parameter1: this.firstOperand })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult('SQUARE_ROOT', this.firstOperand!, undefined, res.result), (_: any) => this.display = 'Hata');
         break;
     }
     this.firstOperand = null;
     this.lastOperator = null;
   }
 
-  private handleResult(expression: string, result: number) {
+  private handleResult(operation: string, parameter1: number, parameter2: number | undefined, result: number) {
     this.display = result.toString();
     const historyItem: HistoryEntity = {
       operation: operation as any,
