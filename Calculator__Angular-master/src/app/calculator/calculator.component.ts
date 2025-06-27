@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ApiService, ResultDto } from '../services/api.service';
+import { ApiService, ResultDto, HistoryEntity } from '../services/api.service';
 
 @Component({
   selector: 'calculator',
@@ -9,14 +9,24 @@ import { ApiService, ResultDto } from '../services/api.service';
   templateUrl: './calculator.component.html',
   styleUrls: ['./calculator.component.scss']
 })
-export class CalculatorComponent {
+export class CalculatorComponent implements OnInit {
   display: string = '';
   showHistory: boolean = false;
-  history: { expression: string; result: string; timestamp: Date }[] = [];
+  history: HistoryEntity[] = [];
   private lastOperator: string | null = null;
   private firstOperand: number | null = null;
 
   constructor(private apiService: ApiService) {}
+
+  ngOnInit() {
+    this.loadHistory();
+  }
+
+  loadHistory() {
+    this.apiService.getHistory().subscribe((data: HistoryEntity[]) => {
+      this.history = data;
+    });
+  }
 
   clear() {
     this.display = '';
@@ -58,11 +68,36 @@ export class CalculatorComponent {
     this.showHistory = !this.showHistory;
   }
 
-  useHistoryItem(item: { expression: string; result: string; timestamp: Date }) {
-    this.display = item.expression;
+  useHistoryItem(item: HistoryEntity) {
+    if (item.operation === 'SQUARE_ROOT') {
+      this.display = `√${item.parameter1}`;
+    } else if (item.parameter2 !== undefined) {
+      let op = '';
+      switch (item.operation) {
+        case 'ADDITION': op = '+'; break;
+        case 'SUBTRACTION': op = '-'; break;
+        case 'MULTIPLICATION': op = '*'; break;
+        case 'DIVISION': op = '/'; break;
+        case 'POWER': op = '^'; break;
+      }
+      this.display = `${item.parameter1}${op}${item.parameter2}`;
+    } else {
+      this.display = `${item.parameter1}`;
+    }
   }
 
-  formatTimestamp(date: Date): string {
+  getOpSymbol(op: string): string {
+    switch (op) {
+      case 'ADDITION': return '+';
+      case 'SUBTRACTION': return '-';
+      case 'MULTIPLICATION': return '*';
+      case 'DIVISION': return '/';
+      case 'POWER': return '^';
+      default: return '';
+    }
+  }
+
+  formatTimestamp(date: string): string {
     const d = new Date(date);
     return d.toLocaleString('tr-TR');
   }
@@ -103,41 +138,49 @@ export class CalculatorComponent {
       case '+':
         expression = `${this.firstOperand}+${secondOperand}`;
         this.apiService.add({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult(res.result, 'ADDITION', this.firstOperand!, secondOperand!), (_: any) => this.display = 'Hata');
         break;
       case '-':
         expression = `${this.firstOperand}-${secondOperand}`;
         this.apiService.subtract({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult(res.result, 'SUBTRACTION', this.firstOperand!, secondOperand!), (_: any) => this.display = 'Hata');
         break;
       case '*':
         expression = `${this.firstOperand}*${secondOperand}`;
         this.apiService.multiply({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult(res.result, 'MULTIPLICATION', this.firstOperand!, secondOperand!), (_: any) => this.display = 'Hata');
         break;
       case '/':
         expression = `${this.firstOperand}/${secondOperand}`;
         this.apiService.divide({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult(res.result, 'DIVISION', this.firstOperand!, secondOperand!), (_: any) => this.display = 'Hata');
         break;
       case '^':
         expression = `${this.firstOperand}^${secondOperand}`;
         this.apiService.power({ parameter1: this.firstOperand, parameter2: secondOperand! })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult(res.result, 'POWER', this.firstOperand!, secondOperand!), (_: any) => this.display = 'Hata');
         break;
       case '√':
         expression = `√${this.firstOperand}`;
         this.apiService.squareRoot({ parameter1: this.firstOperand })
-          .subscribe((res: ResultDto) => this.handleResult(expression, res.result), (_: any) => this.display = 'Hata');
+          .subscribe((res: ResultDto) => this.handleResult(res.result, 'SQUARE_ROOT', this.firstOperand!), (_: any) => this.display = 'Hata');
         break;
     }
     this.firstOperand = null;
     this.lastOperator = null;
   }
 
-  private handleResult(expression: string, result: number) {
+  private handleResult(result: number, operation: string, parameter1: number, parameter2?: number) {
     this.display = result.toString();
-    this.history.unshift({ expression, result: result.toString(), timestamp: new Date() });
-    if (this.history.length > 10) this.history.pop();
+    const historyItem: HistoryEntity = {
+      operation: operation as any,
+      parameter1,
+      parameter2,
+      result,
+      date: new Date().toISOString()
+    };
+    this.apiService.addHistory(historyItem).subscribe(() => {
+      this.loadHistory();
+    });
   }
 } 
