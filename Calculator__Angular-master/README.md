@@ -65,10 +65,15 @@ For end-to-end (e2e) testing, run:
 ng e2e
 ```
 ## Color Scheme
-![Color scheme](https://github.com/user-attachments/assets/62202199-ff03-4fab-989e-bc7c53f178dd)
 
+![Color scheme](https://github.com/user-attachments/assets/54da863d-9c35-4a31-a7ba-c11db48a25e0)
 
 ## Screenshots
-![Calculator-2](https://github.com/user-attachments/assets/89f41f25-f05f-4df8-b87f-37850365014b)
 
-![Calculator-1](https://github.com/user-attachments/assets/ae25d6ff-34c3-4d15-a74f-45c5a5842aeb)
+
+![Ekran Görüntüsü (33)](https://github.com/user-attachments/assets/1047b18b-cd2f-46ac-b75b-815a7949e76f)
+![Ekran Görüntüsü (38)](https://github.com/user-attachments/assets/5a99b3e0-1408-4851-8a0e-17b2e0814dd0)
+![Ekran Görüntüsü (36)](https://github.com/user-attachments/assets/0947b650-2309-415c-9bd4-b9a61628af90)
+![Ekran Görüntüsü (35)](https://github.com/user-attachments/assets/54917c0a-ecf7-4b1b-9714-627cc6707455)
+![Ekran Görüntüsü (34)](https://github.com/user-attachments/assets/80f4a74d-db25-42ff-aab0-881104daeb27)
+
